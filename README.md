@@ -1,4 +1,4 @@
-# Read Me First
+# Read Me Really Do it
 The following was discovered as part of building this project:
 
 * The original package name 'com.sda.currency-exchange-app' is invalid and this project uses 'com.sda.currencyexchangeapp' instead.
