@@ -36,11 +36,12 @@ public class CurrencyService {
         return currencyRepository.findByBase(baseCurrency);
     }
 
-//    public CurrencyExchangeRateModel getAndProcessCurrency(String baseCurrency) {
-//        CurrencyExchangeRateModel currency = //TODO currencyApiIntegrationService.get....
-//        currencyRepository.save(currency);
-//        return currency;
-//    }
+    public CurrencyExchangeRateModelDto getAndProcessCurrency(String baseCurrency) {
+       // CurrencyExchangeRateModel currency = //TODO currencyApiIntegrationService.get....
+                CurrencyExchangeRateModelDto currencyDto = currencyMapper.map(currency) ;
+        currencyRepository.save(currencyDto);
+        return currencyDto;
+    }
 
 //    public WeatherDto getAndProcessWeather(String cityName) {
 //        // Get weather from external service
