@@ -1,5 +1,6 @@
 package com.sda.currencyexchangeapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,30 +9,28 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.time.LocalDate;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashMap;
 
 @Data
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class CurrencyExchangeRateModel {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class CurrencyExchangeRateModel implements Serializable {
 
-    private Long id;
-    private String baseCurrency;
-    private String targetCurrency;
-    private double rate;
-    private LocalDate date;
+    private String base;
+    private HashMap<String, Double> rates;
+    private Date date;
 
 
-    public void setId(Long id) {
-        this.id = id;
+    @Override
+    public String toString() {
+        return "CurrencyExchangeRateModel{" +
+                ", base='" + base + '\'' +
+                ", target='" + rates.keySet() + '\'' +
+                ", rates=" + rates.values() +
+                ", date=" + date +
+                '}';
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long getId() {
-        return id;
-    }
-
-
 }
