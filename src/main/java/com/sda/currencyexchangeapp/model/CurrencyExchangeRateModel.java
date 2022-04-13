@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -13,6 +15,7 @@ import java.util.HashMap;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Component
 public class CurrencyExchangeRateModel implements Serializable {
 
     private String base;
@@ -22,11 +25,16 @@ public class CurrencyExchangeRateModel implements Serializable {
 
     @Override
     public String toString() {
-        return "CurrencyExchangeRateModel{" +
-                ", base='" + base + '\'' +
-                ", target='" + rates.keySet() + '\'' +
-                ", rates=" + rates.values() +
-                ", date=" + date +
-                '}';
+        return "Base currency: " + base + "\nTarget currency: " + rates.keySet().stream().findFirst().get()
+                + "\nRate: " + String.format("%.4f", 1/rates.values().stream().findFirst().get()) +
+                "\nDate: " + date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+//
+//                "CurrencyExchangeRateModel{" +
+//                ", base='" + base + '\'' +
+//                ", target='" + rates.keySet() + '\'' +
+//                ", rates=" + rates.values() +
+//                ", date=" + date +
+//                '}';
     }
 }

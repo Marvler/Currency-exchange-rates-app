@@ -1,5 +1,6 @@
 package com.sda.currencyexchangeapp.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sda.currencyexchangeapp.model.CurrencyExchangeRateModel;
 import com.sda.currencyexchangeapp.model.CurrencyExchangeRateModelDto;
 import com.sda.currencyexchangeapp.repository.CurrencyRepository;
@@ -16,29 +17,39 @@ import java.util.List;
 @Service
 public class CurrencyExchangeService {
 
-    private final ApiConnectionService apiConnectionService;
-    private final CurrencyRepository currencyRepository;
-    private final MapperToDTO mapperToDTO;
-    private final MapperToModel mapperToModel;
+    private ApiConnectionService apiConnectionService;
+    private MapperToModel mapperToModel;
 
     @Autowired
-    public CurrencyExchangeService(ApiConnectionService apiConnectionService, CurrencyRepository currencyRepository, MapperToDTO mapperToDTO, MapperToModel mapperToModel) {
+    public CurrencyExchangeService(ApiConnectionService apiConnectionService, MapperToModel mapperToModel) {
         this.apiConnectionService = apiConnectionService;
-        this.currencyRepository = currencyRepository;
-        this.mapperToDTO = mapperToDTO;
         this.mapperToModel = mapperToModel;
     }
 
 
-    public String getCurrentCurrencyRateData(String base, String target) {
-        String url = String.format("https://api.exchangerate.host/latest?base=%s&symbols=%s",base,target);
-        ResponseEntity<String> response = apiConnectionService.createApiConnection(url);
-        return response.getBody();
+    public String getAndProcessCurrentCurrencyRateData(String base, String target) throws JsonProcessingException {
+        //Get Data From API
+        CurrencyExchangeRateModel currencyExchangeRateModel = mapperToModel.mapJsonToModelObject(base, target);
+        //TODO Check if in DB and save if not
+
+//        String url = String.format("https://api.exchangerate.host/latest?base=%s&symbols=%s",base,target);
+//        ResponseEntity<String> response = apiConnectionService.createApiConnection(url);
+//        return response.getBody();
+        return currencyExchangeRateModel.toString();
+    }
+    public String getAndProcessCurrentCurrencyRateData(String date, String base, String target) throws JsonProcessingException {
+        //Get Data From API
+        CurrencyExchangeRateModel currencyExchangeRateModel = mapperToModel.mapJsonToModelObject(date,base, target);
+        //TODO Check if in DB and save if not
 
     }
 
+
+        return currencyExchangeRateModel.toString();
+
     public void saveCurrencyExchangeRate(CurrencyExchangeRateModelDto currencyExchangeRateModelDto){
         currencyRepository.save(currencyExchangeRateModelDto);
+
     }
 
     public List<CurrencyExchangeRateModelDto> getAllCurrenciesData(){
@@ -60,5 +71,7 @@ public class CurrencyExchangeService {
 //        currencyRepository.save(currencyDto);
 //        return currencyDto;
 //    }
+
+
 
 }
