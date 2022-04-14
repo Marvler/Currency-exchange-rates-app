@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface CurrencyRepository extends JpaRepository<CurrencyExchangeRateModelDto, Long> {
 
-    List<CurrencyExchangeRateModel> findByDate (LocalDate date);
+    List<CurrencyExchangeRateModelDto> findByDate (LocalDate date);
 
-    List<CurrencyExchangeRateModel> findByBase (String baseCurrency);
+    List<CurrencyExchangeRateModelDto> findByBase (String base);
 }
