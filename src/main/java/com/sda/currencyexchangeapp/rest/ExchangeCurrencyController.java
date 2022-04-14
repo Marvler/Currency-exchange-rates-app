@@ -2,19 +2,13 @@ package com.sda.currencyexchangeapp.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sda.currencyexchangeapp.model.CurrencyExchangeRateModel;
-import com.sda.currencyexchangeapp.model.CurrencyExchangeRateModelDto;
 import com.sda.currencyexchangeapp.service.CurrencyExchangeService;
-import com.sda.currencyexchangeapp.service.MapperToDTO;
 import com.sda.currencyexchangeapp.service.MapperToModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 
 @RequestMapping("/currency")
@@ -32,7 +26,7 @@ public class ExchangeCurrencyController {
 
     @GetMapping("/current")
     public String getCurrentCurrencyRate(@RequestParam String base, @RequestParam String target ) throws JsonProcessingException {
-        return currencyExchangeService.getAndProcessCurrentCurrencyRateData(base.toUpperCase(),target.toUpperCase()).toString();
+        return currencyExchangeService.getAndProcessCurrencyExchangeRateAfterValidation(base.toUpperCase(),target.toUpperCase()).toString();
     }
 
     @GetMapping("/historical")
@@ -55,9 +49,9 @@ public class ExchangeCurrencyController {
         return currencyExchangeService.findByBaseCurrency(baseCurrency);
     }
 
-    @GetMapping("/api/test")
-    public void test(){
-        currencyExchangeService.saveCurrencyExchangeRate(new CurrencyExchangeRateModelDto(1L,"USD","PLN", LocalDate.now()));
-    }
+//    @GetMapping("/api/test")
+//    public void test(){
+//        currencyExchangeService.saveCurrencyExchangeRate(new CurrencyExchangeRateModelDto(1L,"USD","PLN", LocalDate.now()));
+//    }
 
 }
