@@ -29,12 +29,5 @@ public class CurrencyExchangeRateModel implements Serializable {
                 + "\nRate: " + String.format("%.4f", 1/rates.values().stream().findFirst().get()) +
                 "\nDate: " + date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-//
-//                "CurrencyExchangeRateModel{" +
-//                ", base='" + base + '\'' +
-//                ", target='" + rates.keySet() + '\'' +
-//                ", rates=" + rates.values() +
-//                ", date=" + date +
-//                '}';
     }
 }
