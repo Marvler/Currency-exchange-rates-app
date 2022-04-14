@@ -3,6 +3,7 @@ package com.sda.currencyexchangeapp.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sda.currencyexchangeapp.model.CurrencyExchangeRateModel;
 import com.sda.currencyexchangeapp.model.CurrencyExchangeRateModelDto;
+import com.sda.currencyexchangeapp.model.CurrencyProcessingException;
 import com.sda.currencyexchangeapp.repository.CurrencyRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +33,20 @@ public class CurrencyExchangeService {
         this.mapperToModel = mapperToModel;
         this.currencyRepository = currencyRepository;
         this.mapperToDTO = mapperToDTO;
+
+
+public String getAndProcessCurrencyExchangeRateAfterValidation(String base, String target) throws JsonProcessingException {
+
+        if (validation.validateIfCurrencyExists(base, target)) {
+            return getAndProcessCurrentCurrencyRateData(base, target);
+        } else {
+            throw new CurrencyProcessingException("Cannot get currency exchange data.");
+        }
     }
 
 
-    public String getAndProcessCurrentCurrencyRateData(String base, String target) throws JsonProcessingException {
+   public String getAndProcessCurrentCurrencyRateData(String base, String target) throws JsonProcessingException {
+
 
         CurrencyExchangeRateModel currencyExchangeRateModel = mapperToModel.mapJsonToModelObject(base, target);
         CurrencyExchangeRateModelDto currencyExchangeRateModelDto = mapperToDTO.convertModelToDTO(currencyExchangeRateModel);
@@ -43,10 +54,12 @@ public class CurrencyExchangeService {
         if (!currencyRepository.exists(dtoExample)) {
             currencyRepository.save(currencyExchangeRateModelDto);
         }
+        CurrencyExchangeRateModel currencyExchangeRateModel = mapperToModel.mapJsonToModelObject(base, target);
+
         return currencyExchangeRateModel.toString();
     }
 
-    public String getAndProcessCurrentCurrencyRateData(String date, String base, String target) throws JsonProcessingException {
+   public String getAndProcessCurrentCurrencyRateData(String date, String base, String target) throws JsonProcessingException {
 
         CurrencyExchangeRateModel currencyExchangeRateModel = mapperToModel.mapJsonToModelObject(date, base, target);
         CurrencyExchangeRateModelDto currencyExchangeRateModelDto = mapperToDTO.convertModelToDTO(currencyExchangeRateModel);
@@ -56,8 +69,7 @@ public class CurrencyExchangeService {
         }
         return currencyExchangeRateModelDto.toString();
     }
-
-
+  
     public List<CurrencyExchangeRateModelDto> getAllCurrenciesData() {
         return currencyRepository.findAll();
     }
@@ -69,6 +81,5 @@ public class CurrencyExchangeService {
     public List<CurrencyExchangeRateModelDto> findByBaseCurrency(String baseCurrency) {
         return currencyRepository.findByBase(baseCurrency);
     }
-
 
 }

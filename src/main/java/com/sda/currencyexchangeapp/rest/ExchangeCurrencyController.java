@@ -2,13 +2,14 @@ package com.sda.currencyexchangeapp.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sda.currencyexchangeapp.model.CurrencyExchangeRateModel;
-import com.sda.currencyexchangeapp.model.CurrencyExchangeRateModelDto;
 import com.sda.currencyexchangeapp.service.CurrencyExchangeService;
+
+import com.sda.currencyexchangeapp.service.MapperToModel;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 
 @RequestMapping("/currency")
 @RestController
@@ -23,7 +24,7 @@ public class ExchangeCurrencyController {
 // example path: http://localhost:8080/currency/current?base=USD&target=PLN
     @GetMapping("/current")
     public String getCurrentCurrencyRate(@RequestParam String base, @RequestParam String target ) throws JsonProcessingException {
-        return currencyExchangeService.getAndProcessCurrentCurrencyRateData(base.toUpperCase(),target.toUpperCase()).toString();
+        return currencyExchangeService.getAndProcessCurrencyExchangeRateAfterValidation(base.toUpperCase(),target.toUpperCase()).toString();
     }
 // example path: http://localhost:8080/currency/historical?date=2010-05-04&base=PLN&target=EUR
     @GetMapping("/historical")
@@ -52,5 +53,4 @@ public class ExchangeCurrencyController {
     public List<CurrencyExchangeRateModelDto> getAllCurrencies(){
         return currencyExchangeService.getAllCurrenciesData();
     }
-
 }
