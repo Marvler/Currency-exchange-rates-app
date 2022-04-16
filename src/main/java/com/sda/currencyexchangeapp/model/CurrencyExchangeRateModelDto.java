@@ -3,16 +3,15 @@ package com.sda.currencyexchangeapp.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "Currencies_Rates")
 public class CurrencyExchangeRateModelDto {
 
     @Id
@@ -26,7 +25,6 @@ public class CurrencyExchangeRateModelDto {
     @Override
     public String toString() {
         return "Base currency: " + base + "\nTarget currency: " + target
-                +"\nDate: " + date + "\nRate: " + String.format("%.4f",1/rate);
+                +"\nDate: " + date + "\nRate: " + String.format("%.4f",rate);
     }
 }
-

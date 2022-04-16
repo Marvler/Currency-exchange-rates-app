@@ -26,7 +26,7 @@ public class CurrencyExchangeRateModel implements Serializable {
     @Override
     public String toString() {
         return "Base currency: " + base + "\nTarget currency: " + rates.keySet().stream().findFirst().get()
-                + "\nRate: " + String.format("%.4f", 1/rates.values().stream().findFirst().get()) +
+                + "\nRate: " + String.format("%.4f", rates.values().stream().findFirst().get()) +
                 "\nDate: " + date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
     }

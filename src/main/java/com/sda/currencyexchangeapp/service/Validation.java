@@ -22,9 +22,8 @@ public class Validation {
             Object object = jsonParser.parse(new FileReader("src/main/resources/currency.json"));
             JSONObject jsonObject = (JSONObject) object;
             JSONArray currencyListFromJSON = (JSONArray) jsonObject.get("currency");
-            Iterator<JSONObject> iterator = currencyListFromJSON.iterator();
-            while (iterator.hasNext()) {
-                currency.add(String.valueOf(iterator.next()));
+            for (Object o : currencyListFromJSON) {
+                currency.add(String.valueOf(o));
             }
         } catch (ParseException | IOException e) {
             e.printStackTrace();
