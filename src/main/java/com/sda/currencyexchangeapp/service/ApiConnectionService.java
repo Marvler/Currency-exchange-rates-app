@@ -1,14 +1,20 @@
 package com.sda.currencyexchangeapp.service;
 
+import com.sda.currencyexchangeapp.model.GoldProcessingException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
 public class ApiConnectionService {
 
-    public ResponseEntity<String> createApiConnection(String url){
+    public ResponseEntity<String> createApiConnection(String url) {
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForEntity(url,String.class);
+        try {
+            return restTemplate.getForEntity(url, String.class);
+        } catch (HttpClientErrorException exception) {
+            throw new GoldProcessingException("There are no records");
+        }
     }
 }
