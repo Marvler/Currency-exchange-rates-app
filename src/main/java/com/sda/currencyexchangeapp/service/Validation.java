@@ -1,5 +1,6 @@
 package com.sda.currencyexchangeapp.service;
 
+import com.sda.currencyexchangeapp.model.GoldProcessingException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -8,10 +9,14 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
 public class Validation {
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-d");
 
     public boolean validateIfCurrencyExists(String base, String target) {
 
@@ -31,6 +36,16 @@ public class Validation {
 
         return currency.contains(base) && currency.contains(target);
 
+    }
+
+    void validateDateFormat(String... dates) {
+        for (String date : dates) {
+            try {
+                LocalDate.parse(date, formatter);
+            } catch (Exception e) {
+                throw new GoldProcessingException("Wrong format date!");
+            }
+        }
     }
 
 }
