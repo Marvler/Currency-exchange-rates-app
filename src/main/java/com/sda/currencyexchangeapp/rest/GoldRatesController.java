@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/gold")
-@Endpoint(id = "stats")
 public class GoldRatesController {
 
     private final GoldRatesService goldRatesService;
@@ -28,15 +27,15 @@ public class GoldRatesController {
 //        return goldRatesService.getGoldPriceForDate(date);
 //    }
 
-    @GetMapping("/{date}")
-    public String getCurrentGoldRateForDate(@PathVariable(name = "date") String date) {
+    @GetMapping("/date")
+    public String getCurrentGoldRateForDate(@RequestParam String date) {
         return goldRatesService.getGoldPriceForDate(date);
     }
 
 
-    @GetMapping("/{startDate}/{endDate}")
-    public String getConvert(@PathVariable(name = "startDate") final String startDate,
-                             @PathVariable(name = "endDate") final String endDate ) {
+    @GetMapping("/period")
+    public String getCurrentGoldRateForPeriod(@RequestParam final String startDate,
+                             @RequestParam final String endDate ) {
         return goldRatesService.getGoldPricesForPeriodOfTime(startDate,endDate);
     }
 

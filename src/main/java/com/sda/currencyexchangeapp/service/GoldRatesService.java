@@ -1,13 +1,9 @@
 package com.sda.currencyexchangeapp.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sda.currencyexchangeapp.model.GoldProcessingException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Service
 public class GoldRatesService {
