@@ -1,4 +1,4 @@
-package com.sda.currencyexchangeapp.model;
+package com.sda.currencyexchangeapp.model.currency;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;

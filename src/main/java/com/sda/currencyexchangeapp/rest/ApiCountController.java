@@ -1,6 +1,6 @@
 package com.sda.currencyexchangeapp.rest;
 
-import com.sda.currencyexchangeapp.service.APICountService;
+import com.sda.currencyexchangeapp.service.API.APICountService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,8 +1,9 @@
-package com.sda.currencyexchangeapp.model;
+package com.sda.currencyexchangeapp.model.gold;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -18,6 +19,8 @@ public class GoldExchangeRateModelDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String rate;
+    @Column(name = "price")
+    private Double price;
+    @Column(name = "date")
     private LocalDate date;
 }

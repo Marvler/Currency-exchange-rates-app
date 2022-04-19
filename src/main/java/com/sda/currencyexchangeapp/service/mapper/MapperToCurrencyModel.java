@@ -1,8 +1,9 @@
-package com.sda.currencyexchangeapp.service;
+package com.sda.currencyexchangeapp.service.mapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sda.currencyexchangeapp.model.CurrencyExchangeRateModel;
+import com.sda.currencyexchangeapp.model.currency.CurrencyExchangeRateModel;
+import com.sda.currencyexchangeapp.service.API.APIConnectionService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,13 +11,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Log4j2
-public class MapperToModel {
+public class MapperToCurrencyModel {
 
-    private final ApiConnectionService apiConnectionService;
+    private final APIConnectionService apiConnectionService;
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public MapperToModel(ApiConnectionService apiConnectionService) {
+    public MapperToCurrencyModel(APIConnectionService apiConnectionService, ObjectMapper objectMapper) {
         this.apiConnectionService = apiConnectionService;
         this.objectMapper = objectMapper;
     }

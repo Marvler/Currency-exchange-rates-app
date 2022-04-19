@@ -1,7 +1,7 @@
-package com.sda.currencyexchangeapp.service;
+package com.sda.currencyexchangeapp.service.mapper;
 
-import com.sda.currencyexchangeapp.model.CurrencyExchangeRateModel;
-import com.sda.currencyexchangeapp.model.CurrencyExchangeRateModelDto;
+import com.sda.currencyexchangeapp.model.currency.CurrencyExchangeRateModel;
+import com.sda.currencyexchangeapp.model.currency.CurrencyExchangeRateModelDto;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -9,7 +9,7 @@ import java.math.RoundingMode;
 import java.time.ZoneId;
 
 @Component
-public class MapperToDTO {
+public class MapperToCurrencyDTO {
 
 
     public CurrencyExchangeRateModelDto convertModelToDTO(CurrencyExchangeRateModel model){

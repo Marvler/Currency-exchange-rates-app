@@ -1,17 +1,16 @@
-package com.sda.currencyexchangeapp.service;
+package com.sda.currencyexchangeapp.service.API;
 
 import com.google.gson.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class APICountService {
 
-    private final ApiConnectionService apiConnectionService;
+    private final APIConnectionService apiConnectionService;
     private final Gson gson;
 
-    public APICountService(ApiConnectionService apiConnectionService) {
+    public APICountService(APIConnectionService apiConnectionService) {
         this.apiConnectionService = apiConnectionService;
         this.gson = new Gson();
     }

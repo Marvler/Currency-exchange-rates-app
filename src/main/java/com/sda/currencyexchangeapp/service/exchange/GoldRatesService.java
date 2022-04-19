@@ -1,9 +1,13 @@
-package com.sda.currencyexchangeapp.service;
+package com.sda.currencyexchangeapp.service.exchange;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.sda.currencyexchangeapp.model.GoldExchangeRateModel;
-import com.sda.currencyexchangeapp.model.GoldExchangeRateModelDTO;
+import com.sda.currencyexchangeapp.model.gold.GoldExchangeRateModel;
+import com.sda.currencyexchangeapp.model.gold.GoldExchangeRateModelDTO;
 import com.sda.currencyexchangeapp.repository.GoldRepository;
+import com.sda.currencyexchangeapp.service.API.APIConnectionService;
+import com.sda.currencyexchangeapp.service.mapper.MapperToGoldDTO;
+import com.sda.currencyexchangeapp.service.mapper.MapperToGoldModel;
+import com.sda.currencyexchangeapp.service.validator.Validation;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +17,7 @@ import org.springframework.web.client.HttpClientErrorException;
 @Service
 public class GoldRatesService {
 
-    private final ApiConnectionService apiConnectionService;
+    private final APIConnectionService apiConnectionService;
     private final String url = "http://api.nbp.pl/api/cenyzlota/";
     private final Validation validation;
     private final MapperToGoldDTO mapperToGoldDTO;
@@ -23,7 +27,7 @@ public class GoldRatesService {
     static ExampleMatcher modelMatcher = ExampleMatcher.matching()
             .withIgnorePaths("id");
 
-    public GoldRatesService(ApiConnectionService apiConnectionService, Validation validation, MapperToGoldDTO mapperToGoldDTO, MapperToGoldModel mapperToGoldModel, GoldRepository goldRepository) {
+    public GoldRatesService(APIConnectionService apiConnectionService, Validation validation, MapperToGoldDTO mapperToGoldDTO, MapperToGoldModel mapperToGoldModel, GoldRepository goldRepository) {
         this.apiConnectionService = apiConnectionService;
         this.validation = validation;
         this.mapperToGoldDTO = mapperToGoldDTO;

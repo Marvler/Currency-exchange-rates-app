@@ -1,4 +1,4 @@
-package com.sda.currencyexchangeapp.model;
+package com.sda.currencyexchangeapp.model.currency;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

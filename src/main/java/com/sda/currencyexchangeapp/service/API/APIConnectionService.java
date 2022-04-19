@@ -1,13 +1,13 @@
-package com.sda.currencyexchangeapp.service;
+package com.sda.currencyexchangeapp.service.API;
 
-import com.sda.currencyexchangeapp.model.GoldProcessingException;
+import com.sda.currencyexchangeapp.model.gold.GoldProcessingException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class ApiConnectionService {
+public class APIConnectionService {
 
     public ResponseEntity<String> createApiConnection(String url) {
         RestTemplate restTemplate = new RestTemplate();
