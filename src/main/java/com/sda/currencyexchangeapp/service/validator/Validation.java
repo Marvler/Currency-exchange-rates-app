@@ -1,6 +1,7 @@
 package com.sda.currencyexchangeapp.service.validator;
 
-import com.sda.currencyexchangeapp.model.gold.GoldProcessingException;
+import com.sda.currencyexchangeapp.model.gold.NoResultException;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+@Slf4j
 @Service
 public class Validation {
 
@@ -31,7 +33,7 @@ public class Validation {
                 currency.add(String.valueOf(o));
             }
         } catch (ParseException | IOException e) {
-            e.printStackTrace();
+            throw new NoResultException("Exception: Currency don't exist.");
         }
 
         return currency.contains(base) && currency.contains(target);
@@ -43,7 +45,7 @@ public class Validation {
             try {
                 LocalDate.parse(date, formatter);
             } catch (Exception e) {
-                throw new GoldProcessingException("Wrong format date!");
+                throw new NoResultException("Wrong format date!");
             }
         }
     }
