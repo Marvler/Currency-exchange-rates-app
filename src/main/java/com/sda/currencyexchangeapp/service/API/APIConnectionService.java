@@ -1,19 +1,22 @@
 package com.sda.currencyexchangeapp.service.API;
 
+
 import com.sda.currencyexchangeapp.model.gold.NoResultException;
+import com.sda.currencyexchangeapp.configuration.RestTemplateConfig;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+
 @Service
 public class APIConnectionService {
 
-//   private final RestTemplate restTemplate;
-//
-//    public APIConnectionService(RestTemplate restTemplate) {
-//        this.restTemplate = restTemplate;
-//    }
+    RestTemplate restTemplate;
+
+    public APIConnectionService(RestTemplateConfig restTemplate) {
+        this.restTemplate = restTemplate.restTemplate();
+    }
 
 
     public ResponseEntity<String> createApiConnection(String url) {

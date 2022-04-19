@@ -1,6 +1,7 @@
 package com.sda.currencyexchangeapp.service.API;
 
 import com.google.gson.*;
+import com.sda.currencyexchangeapp.configuration.GsonConfig;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +11,9 @@ public class APICountService {
     private final APIConnectionService apiConnectionService;
     private final Gson gson;
 
-    public APICountService(APIConnectionService apiConnectionService) {
+    public APICountService(APIConnectionService apiConnectionService,GsonConfig gson ) {
         this.apiConnectionService = apiConnectionService;
-        this.gson = new Gson();
+        this.gson = gson.gson();
     }
 
     public String getTotalNumberOfApiCalls(String endpoint) {
