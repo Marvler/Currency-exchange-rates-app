@@ -1,7 +1,7 @@
 package com.sda.currencyexchangeapp.service.API;
 
 
-import com.sda.currencyexchangeapp.model.gold.NoResultException;
+import com.sda.currencyexchangeapp.model.exception.NoResultException;
 import com.sda.currencyexchangeapp.configuration.RestTemplateConfig;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

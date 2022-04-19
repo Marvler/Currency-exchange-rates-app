@@ -3,7 +3,7 @@ package com.sda.currencyexchangeapp.service.exchange;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sda.currencyexchangeapp.model.currency.CurrencyExchangeRateModel;
 import com.sda.currencyexchangeapp.model.currency.CurrencyExchangeRateModelDto;
-import com.sda.currencyexchangeapp.model.gold.CurrencyProcessingException;
+import com.sda.currencyexchangeapp.model.exception.CurrencyProcessingException;
 import com.sda.currencyexchangeapp.repository.CurrencyRepository;
 import com.sda.currencyexchangeapp.service.mapper.MapperToCurrencyDTO;
 import com.sda.currencyexchangeapp.service.mapper.MapperToCurrencyModel;
