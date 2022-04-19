@@ -1,10 +1,13 @@
-package com.sda.currencyexchangeapp.service;
+package com.sda.currencyexchangeapp.service.exchange;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.sda.currencyexchangeapp.model.CurrencyExchangeRateModel;
-import com.sda.currencyexchangeapp.model.CurrencyExchangeRateModelDto;
-import com.sda.currencyexchangeapp.model.CurrencyProcessingException;
+import com.sda.currencyexchangeapp.model.currency.CurrencyExchangeRateModel;
+import com.sda.currencyexchangeapp.model.currency.CurrencyExchangeRateModelDto;
+import com.sda.currencyexchangeapp.model.gold.CurrencyProcessingException;
 import com.sda.currencyexchangeapp.repository.CurrencyRepository;
+import com.sda.currencyexchangeapp.service.mapper.MapperToCurrencyDTO;
+import com.sda.currencyexchangeapp.service.mapper.MapperToCurrencyModel;
+import com.sda.currencyexchangeapp.service.validator.Validation;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -17,16 +20,16 @@ import java.util.List;
 @Service
 public class CurrencyExchangeService {
 
-    private final MapperToModel mapperToModel;
+    private final MapperToCurrencyModel mapperToCurrencyModel;
     private final CurrencyRepository currencyRepository;
-    private final MapperToDTO mapperToDTO;
+    private final MapperToCurrencyDTO mapperToDTO;
     private final Validation validation;
 
     static ExampleMatcher modelMatcher = ExampleMatcher.matching()
             .withIgnorePaths("id");
 
-    public CurrencyExchangeService(MapperToModel mapperToModel, CurrencyRepository currencyRepository, MapperToDTO mapperToDTO, Validation validation) {
-        this.mapperToModel = mapperToModel;
+    public CurrencyExchangeService(MapperToCurrencyModel mapperToCurrencyModel, CurrencyRepository currencyRepository, MapperToCurrencyDTO mapperToDTO, Validation validation) {
+        this.mapperToCurrencyModel = mapperToCurrencyModel;
         this.currencyRepository = currencyRepository;
         this.mapperToDTO = mapperToDTO;
         this.validation = validation;
@@ -35,7 +38,7 @@ public class CurrencyExchangeService {
     public String getAndProcessCurrencyExchangeRateAfterValidation(String base, String target) throws JsonProcessingException {
 
         if (base.equalsIgnoreCase(target)) {
-            throw new CurrencyProcessingException("Base currency and Target currency is the same. Guess the result :). DB not updated.");
+            throw new CurrencyProcessingException("Base currency and Target currency are the same. Guess the result :). DB not updated.");
         } else if (!validation.validateIfCurrencyExists(base, target)) {
             throw new CurrencyProcessingException("Cannot get currency exchange data. DB not updated");
         } else {
@@ -46,7 +49,7 @@ public class CurrencyExchangeService {
     public String getAndProcessCurrentCurrencyRateData(String base, String target) throws JsonProcessingException {
 
 
-        CurrencyExchangeRateModel currencyExchangeRateModel = mapperToModel.mapJsonToModelObject(base, target);
+        CurrencyExchangeRateModel currencyExchangeRateModel = mapperToCurrencyModel.mapJsonToModelObject(base, target);
         CurrencyExchangeRateModelDto currencyExchangeRateModelDto = mapperToDTO.convertModelToDTO(currencyExchangeRateModel);
         Example<CurrencyExchangeRateModelDto> dtoExample = Example.of(currencyExchangeRateModelDto, modelMatcher);
         if (!currencyRepository.exists(dtoExample)) {
@@ -58,7 +61,7 @@ public class CurrencyExchangeService {
 
     public String getAndProcessCurrentCurrencyRateData(String date, String base, String target) throws JsonProcessingException {
 
-        CurrencyExchangeRateModel currencyExchangeRateModel = mapperToModel.mapJsonToModelObject(date, base, target);
+        CurrencyExchangeRateModel currencyExchangeRateModel = mapperToCurrencyModel.mapJsonToModelObject(date, base, target);
         CurrencyExchangeRateModelDto currencyExchangeRateModelDto = mapperToDTO.convertModelToDTO(currencyExchangeRateModel);
         Example<CurrencyExchangeRateModelDto> dtoExample = Example.of(currencyExchangeRateModelDto, modelMatcher);
         if (!currencyRepository.exists(dtoExample)) {
@@ -77,6 +80,10 @@ public class CurrencyExchangeService {
 
     public List<CurrencyExchangeRateModelDto> findByBaseCurrency(String baseCurrency) {
         return currencyRepository.findByBase(baseCurrency);
+    }
+
+    public long getDBcounter(){
+        return currencyRepository.count();
     }
 
 }

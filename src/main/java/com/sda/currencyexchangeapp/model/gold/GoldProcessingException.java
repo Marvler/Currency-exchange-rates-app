@@ -1,4 +1,4 @@
-package com.sda.currencyexchangeapp.model;
+package com.sda.currencyexchangeapp.model.gold;
 
 public class GoldProcessingException extends RuntimeException {
 

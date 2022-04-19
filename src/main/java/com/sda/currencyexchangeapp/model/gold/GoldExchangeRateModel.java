@@ -1,4 +1,4 @@
-package com.sda.currencyexchangeapp.model;
+package com.sda.currencyexchangeapp.model.gold;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Component
 public class GoldExchangeRateModel {
 
-    private String rate;
+    private Double price;
     private LocalDate date;
 
 }

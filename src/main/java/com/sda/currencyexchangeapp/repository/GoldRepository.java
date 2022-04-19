@@ -1,6 +1,6 @@
 package com.sda.currencyexchangeapp.repository;
 
-import com.sda.currencyexchangeapp.model.GoldExchangeRateModelDTO;
+import com.sda.currencyexchangeapp.model.gold.GoldExchangeRateModelDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface GoldRepository extends JpaRepository<GoldExchangeRateModelDTO, Long> {
 
-    List<GoldExchangeRateModelDTO> findByDate (LocalDate date);
+    List<GoldExchangeRateModelDTO> findByDate (LocalDate data);
 }

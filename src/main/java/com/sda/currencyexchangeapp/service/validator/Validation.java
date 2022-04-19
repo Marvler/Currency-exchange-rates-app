@@ -1,6 +1,6 @@
-package com.sda.currencyexchangeapp.service;
+package com.sda.currencyexchangeapp.service.validator;
 
-import com.sda.currencyexchangeapp.model.GoldProcessingException;
+import com.sda.currencyexchangeapp.model.gold.GoldProcessingException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -38,7 +38,7 @@ public class Validation {
 
     }
 
-    void validateDateFormat(String... dates) {
+    public void validateDateFormat(String... dates) {
         for (String date : dates) {
             try {
                 LocalDate.parse(date, formatter);
