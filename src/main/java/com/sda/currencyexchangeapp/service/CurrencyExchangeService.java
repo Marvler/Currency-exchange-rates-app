@@ -25,14 +25,12 @@ public class CurrencyExchangeService {
     static ExampleMatcher modelMatcher = ExampleMatcher.matching()
             .withIgnorePaths("id");
 
-
     public CurrencyExchangeService(MapperToModel mapperToModel, CurrencyRepository currencyRepository, MapperToDTO mapperToDTO, Validation validation) {
         this.mapperToModel = mapperToModel;
         this.currencyRepository = currencyRepository;
         this.mapperToDTO = mapperToDTO;
         this.validation = validation;
     }
-
 
     public String getAndProcessCurrencyExchangeRateAfterValidation(String base, String target) throws JsonProcessingException {
 
@@ -44,7 +42,6 @@ public class CurrencyExchangeService {
             return getAndProcessCurrentCurrencyRateData(base, target);
         }
     }
-
 
     public String getAndProcessCurrentCurrencyRateData(String base, String target) throws JsonProcessingException {
 

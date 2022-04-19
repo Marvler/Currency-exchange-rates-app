@@ -13,20 +13,19 @@ import org.springframework.stereotype.Service;
 public class MapperToModel {
 
     private final ApiConnectionService apiConnectionService;
+    private final ObjectMapper objectMapper;
 
     @Autowired
     public MapperToModel(ApiConnectionService apiConnectionService) {
         this.apiConnectionService = apiConnectionService;
+        this.objectMapper = objectMapper;
     }
 
     public CurrencyExchangeRateModel mapJsonToModelObject(String base, String target) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(apiConnectionService.createApiConnection(String.format("https://api.exchangerate.host/latest?base=%s&symbols=%s",base,target)).getBody(),CurrencyExchangeRateModel.class);
-
     }
 
     public CurrencyExchangeRateModel mapJsonToModelObject(String date, String base, String target) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(apiConnectionService.createApiConnection(String.format("https://api.exchangerate.host/%s?base=%s&symbols=%s",date,base,target)).getBody(),CurrencyExchangeRateModel.class);
     }
 
