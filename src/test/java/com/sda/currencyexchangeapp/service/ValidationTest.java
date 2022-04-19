@@ -1,5 +1,6 @@
 package com.sda.currencyexchangeapp.service;
 
+import com.sda.currencyexchangeapp.service.validator.Validation;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
