@@ -2,7 +2,6 @@ package com.sda.currencyexchangeapp.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sda.currencyexchangeapp.service.exchange.GoldRatesService;
-import com.sda.currencyexchangeapp.service.mapper.MapperToGoldModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,12 +10,10 @@ import org.springframework.web.bind.annotation.*;
 public class GoldRatesController {
 
     private final GoldRatesService goldRatesService;
-    private final MapperToGoldModel mapperToGoldModel;
 
     @Autowired
-    public GoldRatesController(GoldRatesService goldRatesService, MapperToGoldModel mapperToGoldModel) {
+    public GoldRatesController(GoldRatesService goldRatesService ) {
         this.goldRatesService = goldRatesService;
-        this.mapperToGoldModel = mapperToGoldModel;
     }
 
     @GetMapping("/current")

@@ -1,6 +1,6 @@
 package com.sda.currencyexchangeapp.service.validator;
 
-import com.sda.currencyexchangeapp.model.gold.NoResultException;
+import com.sda.currencyexchangeapp.model.exception.NoResultException;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

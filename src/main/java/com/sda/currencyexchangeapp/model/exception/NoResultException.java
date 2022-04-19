@@ -1,4 +1,4 @@
-package com.sda.currencyexchangeapp.model.gold;
+package com.sda.currencyexchangeapp.model.exception;
 
 public class NoResultException extends RuntimeException {
 

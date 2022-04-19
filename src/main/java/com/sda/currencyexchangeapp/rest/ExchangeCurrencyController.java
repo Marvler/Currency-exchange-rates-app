@@ -15,7 +15,7 @@ public class ExchangeCurrencyController {
     private final CurrencyExchangeService currencyExchangeService;
 
     @Autowired
-    public ExchangeCurrencyController(CurrencyExchangeService currencyExchangeService, CurrencyExchangeService currencyRepository) {
+    public ExchangeCurrencyController(CurrencyExchangeService currencyExchangeService) {
         this.currencyExchangeService = currencyExchangeService;
     }
     @GetMapping("/current")
