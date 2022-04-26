@@ -1,130 +1,111 @@
 package com.sda.currencyexchangeapp.rest;
 
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
-
+import com.sda.currencyexchangeapp.model.gold.GoldExchangeRateModel;
 import com.sda.currencyexchangeapp.service.exchange.GoldRatesService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
-@ContextConfiguration(classes = {GoldRatesController.class})
-@ExtendWith(SpringExtension.class)
-class GoldRatesControllerTest {
+import java.time.LocalDate;
+
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.any;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(GoldRatesController.class)
+public class GoldRatesControllerTest {
+
     @Autowired
-    private GoldRatesController goldRatesController;
+    private MockMvc mockMvc;
 
     @MockBean
     private GoldRatesService goldRatesService;
 
-    /**
-     * Method under test: {@link GoldRatesController#getCurrentGoldRate()}
-     */
+
     @Test
-    void testGetCurrentGoldRate() throws Exception {
-        when(this.goldRatesService.getCurrentGoldPrice()).thenReturn("Current Gold Price");
-        when(this.goldRatesService.processCurrentGoldRateData()).thenReturn("Process Current Gold Rate Data");
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/gold/current");
-        MockMvcBuilders.standaloneSetup(this.goldRatesController)
-                .build()
-                .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
-                .andExpect(MockMvcResultMatchers.content().string("Current Gold Price"));
+    public void givenCurrentRate_whenGetCurrentGoldRate_thenReturnCurrentGoldPrice() throws Exception {
+        // given - precondition or setup
+        given(goldRatesService.getCurrentGoldPrice()).willReturn("270.00");
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/gold/current"));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentType("text/plain;charset=UTF-8"))
+                .andExpect(content().string("270.00"));
     }
 
-    /**
-     * Method under test: {@link GoldRatesController#getCurrentGoldRate()}
-     */
     @Test
-    void testGetCurrentGoldRate2() throws Exception {
-        when(this.goldRatesService.getCurrentGoldPrice()).thenReturn("Current Gold Price");
-        when(this.goldRatesService.processCurrentGoldRateData()).thenReturn("Process Current Gold Rate Data");
-        MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/gold/current");
-        getResult.contentType("https://example.org/example");
-        MockMvcBuilders.standaloneSetup(this.goldRatesController)
-                .build()
-                .perform(getResult)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
-                .andExpect(MockMvcResultMatchers.content().string("Current Gold Price"));
+    public void givenHistoricalRate_whenGetCurrentGoldRateForDate_thenReturnHistoricalGoldPrice() throws Exception {
+        // given - precondition or setup
+        given(goldRatesService.getGoldPriceForDate(any())).willReturn("2022-04-26");
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/gold/date")
+                .param("date", "foo"));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentType("text/plain;charset=UTF-8"))
+                .andExpect(content().string("2022-04-26"));
     }
 
-    /**
-     * Method under test: {@link GoldRatesController#getCurrentGoldRateForDate(String)}
-     */
     @Test
-    void testGetCurrentGoldRateForDate() throws Exception {
-        when(this.goldRatesService.getGoldPriceForDate((String) any())).thenReturn("2020-03-01");
-        when(this.goldRatesService.processGoldRateDataForDate((String) any())).thenReturn("2020-03-01");
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/gold/date").param("date", "foo");
-        MockMvcBuilders.standaloneSetup(this.goldRatesController)
-                .build()
-                .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
-                .andExpect(MockMvcResultMatchers.content().string("2020-03-01"));
+    public void givenHistoricalRate_whenGetCurrentGoldRateForDate_thenReturnNoResultException() throws Exception {
+        // given - precondition or setup
+        GoldExchangeRateModel goldExchangeRateModel = new GoldExchangeRateModel();
+        goldExchangeRateModel.setDate(LocalDate.of(2022, 4, 26));
+        given(goldRatesService.getGoldPriceForDate(any())).willReturn("There was no gold record for date:" + goldExchangeRateModel.getDate());
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/gold/date")
+                .param("date", "foo"));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentType("text/plain;charset=UTF-8"))
+                .andExpect(content().string("There was no gold record for date:" + goldExchangeRateModel.getDate()));
     }
 
-    /**
-     * Method under test: {@link GoldRatesController#getCurrentGoldRateForDate(String)}
-     */
     @Test
-    void testGetCurrentGoldRateForDate2() throws Exception {
-        when(this.goldRatesService.getGoldPriceForDate((String) any())).thenReturn("2020-03-01");
-        when(this.goldRatesService.processGoldRateDataForDate((String) any())).thenReturn("2020-03-01");
-        MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/gold/date");
-        getResult.contentType("https://example.org/example");
-        MockHttpServletRequestBuilder requestBuilder = getResult.param("date", "foo");
-        MockMvcBuilders.standaloneSetup(this.goldRatesController)
-                .build()
-                .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
-                .andExpect(MockMvcResultMatchers.content().string("2020-03-01"));
+    public void givenPeriodDate_whenGetCurrentGoldRateForPeriod_thenReturnHistoricalPeriodGoldPrice() throws Exception {
+        // given - precondition or setup
+        given(goldRatesService.getGoldPricesForPeriodOfTime(anyString(), anyString())).willReturn("Gold Prices For A Period Of Time");
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/gold/period").param("startDate", "foo1").param("endDate", "foo2"));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentType("text/plain;charset=UTF-8"))
+                .andExpect(content().string("Gold Prices For A Period Of Time"));
     }
 
-    /**
-     * Method under test: {@link GoldRatesController#getCurrentGoldRateForPeriod(String, String)}
-     */
     @Test
-    void testGetCurrentGoldRateForPeriod() throws Exception {
-        when(this.goldRatesService.getGoldPricesForPeriodOfTime((String) any(), (String) any()))
-                .thenReturn("Gold Prices For Period Of Time");
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/gold/period")
-                .param("endDate", "foo")
-                .param("startDate", "foo");
-        MockMvcBuilders.standaloneSetup(this.goldRatesController)
-                .build()
-                .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
-                .andExpect(MockMvcResultMatchers.content().string("Gold Prices For Period Of Time"));
+    public void givenPeriodDate_whenGetCurrentGoldRateForPeriod_thenReturnNoResultException() throws Exception {
+        // given - precondition or setup
+        given(goldRatesService.getGoldPricesForPeriodOfTime(anyString(), anyString())).willReturn("Gold Prices For A Period Of Time");
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/gold/period")
+                .param("startDate", "foo1"));
+
+        // then - verify the output
+        response.andExpect(status().is4xxClientError())
+                .andDo(print());
     }
 
-    /**
-     * Method under test: {@link GoldRatesController#getCurrentGoldRateForPeriod(String, String)}
-     */
-    @Test
-    void testGetCurrentGoldRateForPeriod2() throws Exception {
-        when(this.goldRatesService.getGoldPricesForPeriodOfTime((String) any(), (String) any()))
-                .thenReturn("Gold Prices For Period Of Time");
-        MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/gold/period");
-        getResult.contentType("https://example.org/example");
-        MockHttpServletRequestBuilder requestBuilder = getResult.param("endDate", "foo").param("startDate", "foo");
-        MockMvcBuilders.standaloneSetup(this.goldRatesController)
-                .build()
-                .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
-                .andExpect(MockMvcResultMatchers.content().string("Gold Prices For Period Of Time"));
-    }
 }
 
